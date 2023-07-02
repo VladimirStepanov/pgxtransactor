@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+  db:
+    container_name: pgxtransactor_db
+    restart: always
+    image: postgres:14.3
+    environment:
+      POSTGRES_DB: example
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - published: 5433
+        target: 5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d loms" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
