@@ -26,7 +26,7 @@ func main() {
 
 	var repo repository.Repository = repository.New(txManager)
 
-	txManager.RunRepeatableRead(ctx, func(dbCtx context.Context) error {
+	err = txManager.RunRepeatableRead(ctx, func(dbCtx context.Context) error {
 		product, err := repo.GetProduct(dbCtx, 1)
 		if err != nil {
 			return err
@@ -35,5 +35,9 @@ func main() {
 		product.Price += 10000
 		return repo.UpdateProduct(dbCtx, product)
 	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
